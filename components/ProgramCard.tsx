@@ -30,6 +30,9 @@ export default function ProgramCard({ program }: Props) {
           <Text style={styles.durationText}>{program.duration}</Text>
         </View>
       </View>
+      <Text style={styles.shortDescription} numberOfLines={2}>
+        {program.shortDescription}
+      </Text>
     </TouchableOpacity>
   );
 }
@@ -82,5 +85,12 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontWeight: "500",
     color: "#185FA5",
+  },
+  shortDescription: {
+    fontSize: 13,
+    color: "#555",
+    lineHeight: 19,
+    paddingHorizontal: 14,
+    paddingBottom: 14,
   },
 });
