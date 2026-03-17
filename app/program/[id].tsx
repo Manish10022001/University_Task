@@ -1,8 +1,10 @@
 import { programs } from "@/data/programs";
 import { Stack, useLocalSearchParams } from "expo-router";
+import { useState } from "react";
 import {
   Dimensions,
   Image,
+  Modal,
   ScrollView,
   StyleSheet,
   Text,
@@ -11,10 +13,11 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 const { width } = Dimensions.get("window");
+
 export default function ProgramDetail() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const program = programs.find((p) => p.id === Number(id));
-
+  const [modalVisible, setModalVisible] = useState(false);
   if (!program) {
     return (
       <View style={styles.notFound}>
@@ -79,9 +82,50 @@ export default function ProgramDetail() {
           ))}
         </View>
 
-        <TouchableOpacity style={styles.applyBtn}>
+        <TouchableOpacity
+          style={styles.applyBtn}
+          onPress={() => setModalVisible(true)}
+        >
           <Text style={styles.applyText}>Apply Now</Text>
         </TouchableOpacity>
+
+        <Modal
+          visible={modalVisible}
+          transparent
+          animationType="fade"
+          onRequestClose={() => setModalVisible(false)}
+        >
+          <View style={styles.modalBackdrop}>
+            <View style={styles.modalCard}>
+              {/* Icon */}
+              <View style={styles.iconCircle}>
+                <Text style={styles.iconText}>✓</Text>
+              </View>
+
+              {/* Title */}
+              <Text style={styles.modalTitle}>Thank You for Applying!</Text>
+
+              {/* Message */}
+              <Text style={styles.modalMessage}>
+                Your application to{" "}
+                <Text style={styles.modalHighlight}>{program.university}</Text>{" "}
+                has been received. Our admissions team will review your profile
+                and contact you shortly with the next steps.
+              </Text>
+
+              {/* Divider */}
+              <View style={styles.divider} />
+
+              {/* Close button */}
+              <TouchableOpacity
+                style={styles.closeBtn}
+                onPress={() => setModalVisible(false)}
+              >
+                <Text style={styles.closeBtnText}>Got it</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </Modal>
       </ScrollView>
     </SafeAreaView>
   );
@@ -211,6 +255,73 @@ const styles = StyleSheet.create({
   applyText: {
     color: "#fff",
     fontSize: 16,
+    fontWeight: "600",
+  },
+
+  modalBackdrop: {
+    flex: 1,
+    backgroundColor: "rgba(0,0,0,0.5)",
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 24,
+  },
+  modalCard: {
+    backgroundColor: "#fff",
+    borderRadius: 20,
+    padding: 28,
+    width: "100%",
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOpacity: 0.15,
+    shadowRadius: 20,
+    shadowOffset: { width: 0, height: 8 },
+    elevation: 10,
+  },
+  iconCircle: {
+    width: 64,
+    height: 64,
+    borderRadius: 32,
+    backgroundColor: "#f3e8fd",
+    justifyContent: "center",
+    alignItems: "center",
+    marginBottom: 16,
+  },
+  iconText: {
+    fontSize: 28,
+    color: "#c187f4",
+  },
+  modalTitle: {
+    fontSize: 20,
+    fontWeight: "700",
+    color: "#111",
+    marginBottom: 12,
+    textAlign: "center",
+  },
+  modalMessage: {
+    fontSize: 14,
+    color: "#555",
+    lineHeight: 22,
+    textAlign: "center",
+  },
+  modalHighlight: {
+    fontWeight: "600",
+    color: "#c187f4",
+  },
+  divider: {
+    width: "100%",
+    height: 0.5,
+    backgroundColor: "#E5E5E5",
+    marginVertical: 20,
+  },
+  closeBtn: {
+    backgroundColor: "#c187f4",
+    paddingVertical: 12,
+    paddingHorizontal: 40,
+    borderRadius: 12,
+  },
+  closeBtnText: {
+    color: "#fff",
+    fontSize: 15,
     fontWeight: "600",
   },
 });
