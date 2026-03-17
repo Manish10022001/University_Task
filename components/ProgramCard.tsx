@@ -1,4 +1,5 @@
 import { Program } from "@/data/programs";
+import { router } from "expo-router";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 type Props = { program: Program };
@@ -8,7 +9,13 @@ export default function ProgramCard({ program }: Props) {
     <TouchableOpacity
       style={styles.card}
       activeOpacity={0.75}
-      onPress={() => {}}
+      // onPress={() => router.push(/program/${program.id})}
+      onPress={() =>
+        router.push({
+          pathname: "/program/[id]",
+          params: { id: program.id.toString() },
+        })
+      }
     >
       {/* Image */}
       <Image source={program.image} style={styles.image} resizeMode="cover" />
