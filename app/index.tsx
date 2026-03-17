@@ -1,28 +1,21 @@
+import ProgramCard from "@/components/ProgramCard";
 import { programs } from "@/data/programs";
 import { Stack } from "expo-router";
-import { FlatList, Image, StyleSheet, Text, View } from "react-native";
+import { FlatList, StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 export default function HomeScreen() {
   return (
     <SafeAreaView style={styles.container}>
       <Stack.Screen options={{ title: "University" }} />
 
-      <View>
+      {/* <View style={styles.header}>
         <Text style={styles.title}>Universities</Text>
         <Text style={styles.subtitle}>Programs Worldwide</Text>
-      </View>
-
+      </View> */}
       <FlatList
         data={programs}
         keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => (
-          <View style={styles.card}>
-            <Image source={item.image} style={styles.image} />
-            <Text style={styles.title}>{item.university}</Text>
-            <Text>{item.country}</Text>
-            <Text>Duration: {item.duration}</Text>
-          </View>
-        )}
+        renderItem={({ item }) => <ProgramCard program={item} />}
         contentContainerStyle={styles.list}
         showsVerticalScrollIndicator={false}
       />
